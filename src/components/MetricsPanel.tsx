@@ -20,11 +20,38 @@ interface Metrics {
   codeQuality: number;
 }
 
-interface MetricsPanelProps {
-  metrics: Metrics;
+interface CandidateState {
+  confidence_level: "high" | "medium" | "low";
+  thinking_aloud: boolean;
+  clarity_level: "clear" | "vague" | "incoherent";
+  progress_stage: "not_started" | "partial" | "near_solution" | "solved";
+  error_type: "none" | "syntax_slip" | "logic_gap" | "repeated_error";
+  correctness_score: number;
+  silence_duration: "short" | "medium" | "long";
+  strategy_shift: "none" | "mild" | "frequent";
+  activity_level: "actively_typing" | "idle";
+  interview_phase: "warm_up" | "main_problem" | "wrap_up";
+  adaptability: "high" | "medium" | "low";
+  time_remaining: number;
 }
 
-export const MetricsPanel = ({ metrics }: MetricsPanelProps) => {
+interface CandidateInfo {
+  name: string;
+  email: string;
+  position: string;
+  experience: string;
+  dsaExperience: string;
+  preferredLanguage: string;
+  additionalInfo: string;
+}
+
+interface MetricsPanelProps {
+  metrics: Metrics;
+  candidateState?: CandidateState;
+  candidateInfo?: CandidateInfo;
+}
+
+export const MetricsPanel = ({ metrics, candidateState, candidateInfo }: MetricsPanelProps) => {
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60);
     const secs = seconds % 60;

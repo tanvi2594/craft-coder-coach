@@ -7,7 +7,9 @@ import { Play, Bug, Clock, Zap } from "lucide-react";
 
 interface CodeEditorProps {
   language: string;
+  initialCode?: string;
   onChange: (code: string) => void;
+  onRun?: () => void;
 }
 
 const defaultCode = `def find_duplicates(arr):
@@ -29,9 +31,9 @@ if __name__ == "__main__":
     result = find_duplicates(test_array)
     print(f"Duplicates found: {result}")`;
 
-export const CodeEditor = ({ language, onChange }: CodeEditorProps) => {
+export const CodeEditor = ({ language, initialCode, onChange, onRun }: CodeEditorProps) => {
   const editorRef = useRef<any>(null);
-  const [code, setCode] = useState(defaultCode);
+  const [code, setCode] = useState(initialCode || defaultCode);
   const [analysis, setAnalysis] = useState({
     syntaxErrors: 0,
     complexity: "O(1)",
@@ -73,6 +75,7 @@ export const CodeEditor = ({ language, onChange }: CodeEditorProps) => {
 
   const runCode = async () => {
     setIsRunning(true);
+    onRun?.(); // Call the callback if provided
     
     // Simulate code execution
     setTimeout(() => {

@@ -14,7 +14,46 @@ interface Message {
   category?: "hint" | "question" | "feedback" | "encouragement";
 }
 
-export const AIInterviewer = () => {
+interface CandidateState {
+  confidence_level: "high" | "medium" | "low";
+  thinking_aloud: boolean;
+  clarity_level: "clear" | "vague" | "incoherent";
+  progress_stage: "not_started" | "partial" | "near_solution" | "solved";
+  error_type: "none" | "syntax_slip" | "logic_gap" | "repeated_error";
+  correctness_score: number;
+  silence_duration: "short" | "medium" | "long";
+  strategy_shift: "none" | "mild" | "frequent";
+  activity_level: "actively_typing" | "idle";
+  interview_phase: "warm_up" | "main_problem" | "wrap_up";
+  adaptability: "high" | "medium" | "low";
+  time_remaining: number;
+}
+
+interface InterviewAction {
+  type: "warmup" | "challenge" | "guidance" | "probing" | "silent_wait" | "clarification" | "wrap_up";
+  content: string;
+  hint_level?: "nudge" | "guide" | "direction";
+  category?: "hint" | "question" | "feedback" | "encouragement";
+}
+
+interface CandidateInfo {
+  name: string;
+  email: string;
+  position: string;
+  experience: string;
+  dsaExperience: string;
+  preferredLanguage: string;
+  additionalInfo: string;
+}
+
+interface AIInterviewerProps {
+  candidateState?: CandidateState;
+  candidateInfo?: CandidateInfo;
+  onHintUsed?: () => void;
+  decideAction?: (state: CandidateState) => InterviewAction;
+}
+
+export const AIInterviewer = ({ candidateState, candidateInfo, onHintUsed, decideAction }: AIInterviewerProps) => {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: "1",
